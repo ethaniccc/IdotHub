@@ -60,6 +60,7 @@
         <textarea style="width: 600px;height: 100px;" name="postText" placeholder="Post text"></textarea>
         <textarea style="width: 0px;height: 0px;display: none;" name="username"><?php echo $_SESSION['username']?></textarea>
         <textarea style="width: 0px;height: 0px;display: none;" name="password"><?php echo $_SESSION['password']?></textarea>
+        <div></div><button type="submit" class="waves-effect waves-light btn">Post</button>
     </form>
     <?php
         if(isset($_SESSION['error'])){
@@ -76,17 +77,25 @@
             unset($_SESSION['error']);
         }
     ?>
-    <div></div><a class="waves-effect waves-light btn">Post</a>
-    <h1 style="font-size: 30px;font-family: Alatsi, sans-serif;"><strong>Recent Posts</strong></h1>
+    <h1 style="font-size: 30px;font-family: Alatsi, sans-serif;"><strong><u>Recent Posts</u></strong></h1>
     <div></div>
     <?php
         $currentId = 1;
         $posts = [];
-        while($postData = $postDatabase->query("SELECT * FROM posts WHERE rowid = '$currentId'")->fetchArray(SQLITE3_ASSOC) !== false){
+        while(!empty($postData = $postDatabase->query("SELECT * FROM posts WHERE rowid = '$currentId'")->fetchArray(SQLITE3_ASSOC))){
             $posts[$currentId] = ["Author" => $postData['author'], "Text" => $postData['postText']];
             $currentId++;
         }
-        var_dump($posts);
+        krsort($posts);
+        foreach($posts as $post){
+            $author = $post["Author"];
+            $text = $post["Text"];
+            $text = str_replace("\n", "<br>", $text);
+            echo "<p size='15px'><b>$author</b></p>";
+            echo '<div style="height:120px;width:995px;border:1px solid #ccc;overflow:auto;">';
+            echo "<p>$text</p>";
+            echo "</div>";
+        }
     ?>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

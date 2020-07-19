@@ -1,5 +1,7 @@
 <?php
     session_start();
+    include '../vendor/autoload.php';
+    use Parsedown as PSMD;
     if(!isset($_SESSION['username'], $_SESSION['password'])){
         exit("Fatal Error: No username or password given.");
     } else {
@@ -12,7 +14,9 @@
         }
         $postDatabase = new SQLite3('../databases/PostData.db');
         $postDatabase->exec("CREATE TABLE IF NOT EXISTS posts(author STRING NOT NULL, postText TEXT NOT NULL);");
+        $replyDatabase = new SQLite3('../databases/ReplyData.db');
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +39,7 @@
     <link rel="stylesheet" href="assets/css/Rounded-Button.css">
     <link rel="stylesheet" href="assets/css/Social-Icons.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="github.css">
 </head>
 
 <body>
@@ -57,14 +62,14 @@
     <h1 style="font-size: 25px;font-family: Alatsi, sans-serif;"><strong>Create New Post</strong></h1>
     <header></header>
     <form method="post" action="../PostAction.php">
-        <textarea style="width: 600px;height: 100px;" name="postText" placeholder="Post text"></textarea>
+        <textarea style="position: relative; left: 15px;width: 600px;height: 100px;" name="postText" placeholder="Post text"></textarea>
         <textarea style="width: 0px;height: 0px;display: none;" name="username"><?php echo $_SESSION['username']?></textarea>
         <textarea style="width: 0px;height: 0px;display: none;" name="password"><?php echo $_SESSION['password']?></textarea>
-        <div></div><button type="submit" class="waves-effect waves-light btn">Post</button>
+        <div></div><button style="position: relative; left: 15px" type="submit" class="waves-effect waves-light btn">Post</button>
     </form>
     <?php
         if(isset($_SESSION['error'])){
-            echo "<p>";
+            echo "<p style='position: relative; left: 15px;'>";
             switch($_SESSION['error']){
                 case "invalidPostSpace":
                     echo "Invalid post - post contained only spaces!";
@@ -90,10 +95,11 @@
         foreach($posts as $post){
             $author = $post["Author"];
             $text = $post["Text"];
-            $text = str_replace("\n", "<br>", $text);
-            echo "<p size='15px'><b>$author</b></p>";
-            echo '<div style="height:120px;width:995px;border:1px solid #ccc;overflow:auto;">';
-            echo "<p>$text</p>";
+            //$text = str_replace("\n", "<br>", $text);
+            echo "<p style='position: relative;left: 15px' size='15px'><b>$author</b></p>";
+            echo '<div class="markdown-body" style="position:relative;left:30px;height:220px;width:995px;border:1px solid #ccc;overflow:auto;">';
+            $markdownParse = new PSMD();
+            echo $markdownParse->text($text);
             echo "</div>";
         }
     ?>

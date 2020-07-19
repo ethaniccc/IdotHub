@@ -1,0 +1,7 @@
+{
+  "name": "ethaniccc/IdotHub",
+  "description": "Website made for fun by @ethaniccc",
+  "require": {
+    "erusev/parsedown": "^1.7"
+  }
+}

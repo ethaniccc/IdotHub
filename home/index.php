@@ -14,7 +14,6 @@
         }
         $postDatabase = new SQLite3('../databases/PostData.db');
         $postDatabase->exec("CREATE TABLE IF NOT EXISTS posts(author STRING NOT NULL, postText TEXT NOT NULL);");
-        $replyDatabase = new SQLite3('../databases/ReplyData.db');
     }
 
 ?>
@@ -25,7 +24,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>HomePage</title>
+    <title>IdotHub</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alatsi">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
@@ -45,7 +44,7 @@
 <body>
     <div>
         <nav class="navbar navbar-light navbar-expand-md sticky-top navigation-clean-button" style="height:80px;background-color:#37434d;color:#ffffff;">
-            <div class="container-fluid"><img src="assets/img/IdotHub.png" style="width: 50px;"><a class="navbar-brand" href="#">IdotHub</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid"><img src="assets/img/IdotHub.png" style="width: 50px;"><a class="navbar-brand" href="../index.html">IdotHub</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div
                     class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav ml-auto">
@@ -53,7 +52,7 @@
                         <li class="nav-item" role="presentation"></li>
                         <li class="nav-item" role="presentation"></li>
                         <li class="nav-item" role="presentation"></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link active" style="color: #ffffff;margin: -8px;" href="#"><i class="fa fa-sign-in"></i>&nbsp;Sign out</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link active" style="color: #ffffff;margin: -8px;" href="../index.html"><iclass="fa fa-sign-in"></i>&nbsp;Sign out</a></li>
                     </ul>
             </div>
     </div>
@@ -95,9 +94,8 @@
         foreach($posts as $post){
             $author = $post["Author"];
             $text = $post["Text"];
-            //$text = str_replace("\n", "<br>", $text);
             echo "<p style='position: relative;left: 15px' size='15px'><b>$author</b></p>";
-            echo '<div class="markdown-body" style="position:relative;left:30px;height:220px;width:995px;border:1px solid #ccc;overflow:auto;">';
+            echo '<div class="markdown-body" style="position:relative;left:30px;height:auto;width:995px;border:1px solid #ccc;overflow:auto;">';
             $markdownParse = new PSMD();
             echo $markdownParse->text($text);
             echo "</div>";
